@@ -1,0 +1,6 @@
+{
+  "name": "EBS FRET MARITIME",
+  "description": "Fret maritime et aérien entre la France/Europe et le Congo (Pointe-Noire et Brazzaville). Vos colis, en toute sécurité, de la France au Congo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
