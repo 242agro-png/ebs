@@ -13,6 +13,7 @@ import {
   buildSimpleWhatsAppUrl,
 } from '../utils/shipping';
 import { PriceSimulator } from './PriceSimulator';
+import { trackEvent } from '../lib/analytics';
 
 interface HeroSlide {
   src: string;
@@ -123,6 +124,7 @@ export function HeroSection() {
                 href={whatsappDirectUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => void trackEvent('whatsapp_direct_click', { label: 'hero' })}
                 className="inline-flex items-center justify-center gap-2 min-h-[48px] px-5 py-3 bg-white/10 hover:bg-white/15 text-white border border-white/25 font-semibold text-sm sm:text-base rounded-xl transition-colors whitespace-nowrap shrink-0"
               >
                 <MessageCircle className="w-4 h-4 text-[#25D366] shrink-0" aria-hidden="true" />

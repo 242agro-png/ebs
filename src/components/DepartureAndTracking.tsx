@@ -7,6 +7,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { buildSimpleWhatsAppUrl } from '../utils/shipping';
+import { trackEvent } from '../lib/analytics';
 
 // Target departure: 30 Novembre 2026 at 10:30 Paris time
 const TARGET_DATE_MS = new Date('2026-11-30T10:30:00+01:00').getTime();
@@ -54,12 +55,14 @@ export function DepartureAndTracking() {
     }
     setTrackingError('');
     setTrackedCode(cleaned);
+    void trackEvent('tracking_lookup', { label: cleaned });
   };
 
   const handleSampleTrack = (sample: string) => {
     setContainerCode(sample);
     setTrackingError('');
     setTrackedCode(sample);
+    void trackEvent('tracking_lookup', { label: sample });
   };
 
   return (
@@ -112,6 +115,7 @@ export function DepartureAndTracking() {
               href={bookingUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => void trackEvent('whatsapp_direct_click', { label: 'booking_container' })}
               className="inline-flex items-center justify-center gap-2 min-h-[48px] px-5 py-3 bg-[#FFC400] hover:bg-[#ffd033] text-[#0A1F44] font-bold text-sm sm:text-base rounded-xl transition-colors"
             >
               <span>Réserver ma place dans le conteneur</span>

@@ -23,6 +23,7 @@ import {
   createDefaultParcel,
   formatEuro,
 } from '../utils/shipping';
+import { trackEvent } from '../lib/analytics';
 
 export function PriceSimulator() {
   const [mode, setMode] = useState<ShippingMode>('maritime');
@@ -108,7 +109,10 @@ export function PriceSimulator() {
         <div className="grid grid-cols-2 gap-2 p-1 bg-[#F1F5F9] rounded-xl">
           <button
             type="button"
-            onClick={() => setMode('maritime')}
+            onClick={() => {
+              setMode('maritime');
+              void trackEvent('simulator_interact', { mode: 'maritime', destination });
+            }}
             className={`flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all whitespace-nowrap ${
               mode === 'maritime'
                 ? 'bg-[#0A1F44] text-white shadow-sm'
@@ -120,7 +124,10 @@ export function PriceSimulator() {
           </button>
           <button
             type="button"
-            onClick={() => setMode('air')}
+            onClick={() => {
+              setMode('air');
+              void trackEvent('simulator_interact', { mode: 'air', destination });
+            }}
             className={`flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all whitespace-nowrap ${
               mode === 'air'
                 ? 'bg-[#0E5AA8] text-white shadow-sm'
@@ -144,7 +151,10 @@ export function PriceSimulator() {
               <button
                 key={city}
                 type="button"
-                onClick={() => setDestination(city)}
+                onClick={() => {
+                  setDestination(city);
+                  void trackEvent('simulator_interact', { mode, destination: city });
+                }}
                 className={`flex items-center justify-center gap-1.5 min-h-[44px] px-2 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all whitespace-nowrap ${
                   destination === city
                     ? 'bg-white text-[#0A1F44] shadow-sm ring-1 ring-slate-200'
@@ -463,6 +473,15 @@ export function PriceSimulator() {
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() =>
+          void trackEvent('quote_whatsapp_click', {
+            mode,
+            destination,
+            parcelCount: result.parcelCount,
+            estimatedAmountEur: result.estimatedTotal,
+            label: `${mode}_${destination}`,
+          })
+        }
         className="w-full min-h-[52px] inline-flex items-center justify-center gap-2.5 px-5 py-3.5 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-sm sm:text-base rounded-xl shadow-md transition-colors"
       >
         <MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" />

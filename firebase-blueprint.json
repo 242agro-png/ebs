@@ -1,0 +1,256 @@
+{
+  "entities": {
+    "PageView": {
+      "title": "PageView",
+      "description": "Anonymized website page view metric including country, city, device, browser, OS, traffic source, and timestamp.",
+      "type": "object",
+      "properties": {
+        "visitorId": {
+          "type": "string",
+          "description": "Anonymized persistent browser identifier",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "sessionId": {
+          "type": "string",
+          "description": "Anonymized session identifier",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "path": {
+          "type": "string",
+          "description": "Visited URL path or section anchor",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "country": {
+          "type": "string",
+          "description": "Visitor country name",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "countryCode": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code",
+          "minLength": 2,
+          "maxLength": 8,
+          "pattern": "^[A-Z]{2,8}$"
+        },
+        "city": {
+          "type": "string",
+          "description": "Visitor city name",
+          "minLength": 0,
+          "maxLength": 80
+        },
+        "deviceType": {
+          "type": "string",
+          "description": "Device category",
+          "enum": ["mobile", "tablet", "desktop"]
+        },
+        "browser": {
+          "type": "string",
+          "description": "Client browser family",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "os": {
+          "type": "string",
+          "description": "Client operating system",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "referrerDomain": {
+          "type": "string",
+          "description": "Referring domain or direct",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "utmSource": {
+          "type": "string",
+          "description": "Campaign UTM source or none",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "language": {
+          "type": "string",
+          "description": "Browser language locale",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "timezone": {
+          "type": "string",
+          "description": "Client IANA timezone",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "screenWidth": {
+          "type": "integer",
+          "description": "Viewport width in pixels"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server-assigned timestamp"
+        }
+      },
+      "required": [
+        "visitorId",
+        "sessionId",
+        "path",
+        "country",
+        "countryCode",
+        "city",
+        "deviceType",
+        "browser",
+        "os",
+        "referrerDomain",
+        "utmSource",
+        "language",
+        "timezone",
+        "screenWidth",
+        "createdAt"
+      ]
+    },
+    "AnalyticsEvent": {
+      "title": "AnalyticsEvent",
+      "description": "User interaction and conversion event (simulator calculation, WhatsApp quote click, Facebook click, tracking lookup).",
+      "type": "object",
+      "properties": {
+        "visitorId": {
+          "type": "string",
+          "description": "Anonymized persistent browser identifier",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "sessionId": {
+          "type": "string",
+          "description": "Anonymized session identifier",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "eventType": {
+          "type": "string",
+          "description": "Tracked interaction type",
+          "enum": [
+            "quote_whatsapp_click",
+            "whatsapp_direct_click",
+            "facebook_click",
+            "simulator_interact",
+            "tracking_lookup",
+            "maps_click"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "description": "Freight mode if applicable",
+          "enum": ["maritime", "air", "none"]
+        },
+        "destination": {
+          "type": "string",
+          "description": "Selected destination city if applicable",
+          "enum": ["Pointe-Noire", "Brazzaville", "none"]
+        },
+        "parcelCount": {
+          "type": "integer",
+          "description": "Number of parcels simulated"
+        },
+        "estimatedAmountEur": {
+          "type": "number",
+          "description": "Estimated quote total in EUR"
+        },
+        "country": {
+          "type": "string",
+          "description": "Visitor country name",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "countryCode": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code",
+          "minLength": 2,
+          "maxLength": 8,
+          "pattern": "^[A-Z]{2,8}$"
+        },
+        "deviceType": {
+          "type": "string",
+          "description": "Device category",
+          "enum": ["mobile", "tablet", "desktop"]
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional descriptive event label",
+          "minLength": 0,
+          "maxLength": 120
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server-assigned timestamp"
+        }
+      },
+      "required": [
+        "visitorId",
+        "sessionId",
+        "eventType",
+        "mode",
+        "destination",
+        "parcelCount",
+        "estimatedAmountEur",
+        "country",
+        "countryCode",
+        "deviceType",
+        "label",
+        "createdAt"
+      ]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Authorized analytics administrator record.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "email": {
+          "type": "string",
+          "description": "Administrator verified email",
+          "minLength": 3,
+          "maxLength": 120
+        },
+        "role": {
+          "type": "string",
+          "description": "Administrator role",
+          "enum": ["admin"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server-assigned timestamp"
+        }
+      },
+      "required": ["uid", "email", "role", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/page_views/{viewId}": {
+      "schema": { "$ref": "#/entities/PageView" },
+      "description": "Anonymized website page view telemetry records."
+    },
+    "/analytics_events/{eventId}": {
+      "schema": { "$ref": "#/entities/AnalyticsEvent" },
+      "description": "Anonymized conversion and interaction event records."
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/AdminUser" },
+      "description": "Authorized administrator accounts permitted to view and manage analytics metrics."
+    }
+  }
+}

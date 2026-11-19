@@ -1,0 +1,185 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net (Default Deny)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Core Primitives
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedEmail() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isBootstrappedAdmin() {
+      return isVerifiedEmail() && request.auth.token.email == '242agro@gmail.com';
+    }
+
+    function isAdmin() {
+      return isBootstrappedAdmin() || (
+        isVerifiedEmail() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // Validation Blueprint: PageView
+    function isValidPageView(data) {
+      return data.keys().hasAll([
+          'visitorId',
+          'sessionId',
+          'path',
+          'country',
+          'countryCode',
+          'city',
+          'deviceType',
+          'browser',
+          'os',
+          'referrerDomain',
+          'utmSource',
+          'language',
+          'timezone',
+          'screenWidth',
+          'createdAt'
+        ]) &&
+        data.keys().hasOnly([
+          'visitorId',
+          'sessionId',
+          'path',
+          'country',
+          'countryCode',
+          'city',
+          'deviceType',
+          'browser',
+          'os',
+          'referrerDomain',
+          'utmSource',
+          'language',
+          'timezone',
+          'screenWidth',
+          'createdAt'
+        ]) &&
+        data.visitorId is string && data.visitorId.size() >= 1 && data.visitorId.size() <= 64 && data.visitorId.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.sessionId is string && data.sessionId.size() >= 1 && data.sessionId.size() <= 64 && data.sessionId.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.path is string && data.path.size() >= 1 && data.path.size() <= 120 &&
+        data.country is string && data.country.size() >= 1 && data.country.size() <= 80 &&
+        data.countryCode is string && data.countryCode.size() >= 2 && data.countryCode.size() <= 8 && data.countryCode.matches('^[A-Z]{2,8}$') &&
+        data.city is string && data.city.size() >= 0 && data.city.size() <= 80 &&
+        data.deviceType in ['mobile', 'tablet', 'desktop'] &&
+        data.browser is string && data.browser.size() >= 1 && data.browser.size() <= 40 &&
+        data.os is string && data.os.size() >= 1 && data.os.size() <= 40 &&
+        data.referrerDomain is string && data.referrerDomain.size() >= 1 && data.referrerDomain.size() <= 120 &&
+        data.utmSource is string && data.utmSource.size() >= 1 && data.utmSource.size() <= 64 &&
+        data.language is string && data.language.size() >= 1 && data.language.size() <= 20 &&
+        data.timezone is string && data.timezone.size() >= 1 && data.timezone.size() <= 64 &&
+        data.screenWidth is int && data.screenWidth >= 100 && data.screenWidth <= 10000 &&
+        data.createdAt is timestamp && data.createdAt == request.time;
+    }
+
+    // Validation Blueprint: AnalyticsEvent
+    function isValidAnalyticsEvent(data) {
+      return data.keys().hasAll([
+          'visitorId',
+          'sessionId',
+          'eventType',
+          'mode',
+          'destination',
+          'parcelCount',
+          'estimatedAmountEur',
+          'country',
+          'countryCode',
+          'deviceType',
+          'label',
+          'createdAt'
+        ]) &&
+        data.keys().hasOnly([
+          'visitorId',
+          'sessionId',
+          'eventType',
+          'mode',
+          'destination',
+          'parcelCount',
+          'estimatedAmountEur',
+          'country',
+          'countryCode',
+          'deviceType',
+          'label',
+          'createdAt'
+        ]) &&
+        data.visitorId is string && data.visitorId.size() >= 1 && data.visitorId.size() <= 64 && data.visitorId.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.sessionId is string && data.sessionId.size() >= 1 && data.sessionId.size() <= 64 && data.sessionId.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.eventType in [
+          'quote_whatsapp_click',
+          'whatsapp_direct_click',
+          'facebook_click',
+          'simulator_interact',
+          'tracking_lookup',
+          'maps_click'
+        ] &&
+        data.mode in ['maritime', 'air', 'none'] &&
+        data.destination in ['Pointe-Noire', 'Brazzaville', 'none'] &&
+        data.parcelCount is int && data.parcelCount >= 0 && data.parcelCount <= 500 &&
+        (data.estimatedAmountEur is int || data.estimatedAmountEur is float) &&
+        data.estimatedAmountEur >= 0 && data.estimatedAmountEur <= 1000000 &&
+        data.country is string && data.country.size() >= 1 && data.country.size() <= 80 &&
+        data.countryCode is string && data.countryCode.size() >= 2 && data.countryCode.size() <= 8 && data.countryCode.matches('^[A-Z]{2,8}$') &&
+        data.deviceType in ['mobile', 'tablet', 'desktop'] &&
+        data.label is string && data.label.size() >= 0 && data.label.size() <= 120 &&
+        data.createdAt is timestamp && data.createdAt == request.time;
+    }
+
+    // Validation Blueprint: AdminUser
+    function isValidAdminUser(data, adminId) {
+      return data.keys().hasAll(['uid', 'email', 'role', 'createdAt']) &&
+        data.keys().hasOnly(['uid', 'email', 'role', 'createdAt']) &&
+        data.uid is string && data.uid == adminId && isValidId(data.uid) &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 120 &&
+        data.role == 'admin' &&
+        data.createdAt is timestamp && data.createdAt == request.time;
+    }
+
+    // Page Views Telemetry Collection
+    match /page_views/{viewId} {
+      allow get: if isAdmin() && isValidId(viewId);
+      allow list: if isBootstrappedAdmin();
+      allow create: if isValidId(viewId) && isValidPageView(incoming());
+      allow update: if false;
+      allow delete: if isAdmin() && isValidId(viewId);
+    }
+
+    // Analytics Events Telemetry Collection
+    match /analytics_events/{eventId} {
+      allow get: if isAdmin() && isValidId(eventId);
+      allow list: if isBootstrappedAdmin();
+      allow create: if isValidId(eventId) && isValidAnalyticsEvent(incoming());
+      allow update: if false;
+      allow delete: if isAdmin() && isValidId(eventId);
+    }
+
+    // Authorized Admins Collection
+    match /admins/{adminId} {
+      allow get: if isVerifiedEmail() && (request.auth.uid == adminId || isBootstrappedAdmin()) && isValidId(adminId);
+      allow list: if isBootstrappedAdmin();
+      allow create: if isBootstrappedAdmin() && isValidId(adminId) && isValidAdminUser(incoming(), adminId);
+      allow update: if false;
+      allow delete: if isBootstrappedAdmin() && isValidId(adminId) && existing().uid != request.auth.uid;
+    }
+  }
+}

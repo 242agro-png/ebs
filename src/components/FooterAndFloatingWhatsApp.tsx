@@ -1,11 +1,18 @@
-import { MapPin, Clock, MessageCircle, Globe, UserCheck, Facebook } from 'lucide-react';
+import { MapPin, Clock, MessageCircle, Globe, UserCheck, Facebook, BarChart3 } from 'lucide-react';
 import {
   WHATSAPP_DISPLAY,
   FACEBOOK_PAGE_URL,
   buildSimpleWhatsAppUrl,
 } from '../utils/shipping';
+import { trackEvent } from '../lib/analytics';
 
-export function FooterAndFloatingWhatsApp() {
+interface FooterAndFloatingWhatsAppProps {
+  onOpenAnalytics?: () => void;
+}
+
+export function FooterAndFloatingWhatsApp({
+  onOpenAnalytics,
+}: FooterAndFloatingWhatsAppProps) {
   const whatsappUrl = buildSimpleWhatsAppUrl(
     'Bonjour EBS FRET MARITIME, je souhaite un devis gratuit et sans engagement.'
   );
@@ -80,6 +87,7 @@ export function FooterAndFloatingWhatsApp() {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => void trackEvent('whatsapp_direct_click', { label: 'footer' })}
                   className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-sm rounded-xl transition-colors whitespace-nowrap"
                 >
                   <MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
@@ -89,6 +97,7 @@ export function FooterAndFloatingWhatsApp() {
                   href={FACEBOOK_PAGE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => void trackEvent('facebook_click', { label: 'footer' })}
                   className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-sm rounded-xl transition-colors whitespace-nowrap"
                 >
                   <Facebook className="w-4 h-4 shrink-0" aria-hidden="true" />
@@ -100,18 +109,31 @@ export function FooterAndFloatingWhatsApp() {
 
           <div className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-400">
             <p>© {new Date().getFullYear()} EBS FRET MARITIME — Philippe Bandzouzi. Tous droits réservés.</p>
-            <p>Fret Maritime (Port du Havre) &amp; Fret Aérien Express · France / Europe — Congo</p>
+            <div className="flex flex-wrap items-center gap-4">
+              <p>Fret Maritime (Port du Havre) &amp; Fret Aérien Express · France / Europe — Congo</p>
+              {onOpenAnalytics && (
+                <button
+                  type="button"
+                  onClick={onOpenAnalytics}
+                  className="inline-flex items-center gap-1.5 text-slate-400 hover:text-[#FFC400] transition-colors cursor-pointer"
+                >
+                  <BarChart3 className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Statistiques</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </footer>
 
-      {/* Bouton WhatsApp vert fixe en bas à droite */}
+      {/* Bouton WhatsApp vert fixe en bas à droite (décalé au-dessus du badge Netlify) */}
       <a
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => void trackEvent('whatsapp_direct_click', { label: 'floating' })}
         aria-label={`Contacter EBS FRET MARITIME sur WhatsApp au ${WHATSAPP_DISPLAY}`}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 inline-flex items-center gap-2 px-4 py-3 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-sm rounded-full shadow-lg border border-white/20 transition-transform hover:scale-[1.03]"
+        className="fixed bottom-20 right-4 sm:right-6 z-40 inline-flex items-center gap-2 px-4 py-3 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-sm rounded-full shadow-lg border border-white/20 transition-transform hover:scale-[1.03]"
       >
         <MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" />
         <span className="hidden sm:inline whitespace-nowrap">WhatsApp · {WHATSAPP_DISPLAY}</span>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, ShieldCheck, Quote, Container, Facebook, ExternalLink } from 'lucide-react';
 import { IMAGES, FACEBOOK_PAGE_URL } from '../utils/shipping';
+import { trackEvent } from '../lib/analytics';
 
 const KEY_FIGURES = [
   {
@@ -189,6 +190,7 @@ export function TrustGalleryAndFaq() {
               href={FACEBOOK_PAGE_URL}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => void trackEvent('facebook_click', { label: 'gallery_cta' })}
               className="inline-flex items-center justify-center gap-2 min-h-[46px] px-5 py-2.5 bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-sm rounded-xl transition-colors whitespace-nowrap shrink-0"
             >
               <Facebook className="w-4 h-4 shrink-0" aria-hidden="true" />

@@ -27,6 +27,7 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { IMAGES } from '../utils/shipping';
+import { trackEvent } from '../lib/analytics';
 
 const SHARE_GOOGLE_MAPS_URL = 'https://share.google/CKah9QqMZ7F8KDQFI';
 const PLACE_SEARCH_QUERY = 'EBS FRET MARITIME 201 Route de Pierrelaye Herblay';
@@ -557,6 +558,7 @@ function HerblayMapAndPlacesContent() {
                 href={directionsLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => void trackEvent('maps_click', { label: 'directions' })}
                 className="flex-1 inline-flex items-center justify-center gap-2 min-h-[46px] px-4 py-2.5 bg-[#0A1F44] hover:bg-[#0E5AA8] text-white font-bold text-xs sm:text-sm rounded-xl transition-colors whitespace-nowrap"
               >
                 <Navigation className="w-4 h-4 shrink-0" aria-hidden="true" />
@@ -567,6 +569,7 @@ function HerblayMapAndPlacesContent() {
                 href={mapsPlaceLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => void trackEvent('maps_click', { label: 'place_page' })}
                 className="flex-1 inline-flex items-center justify-center gap-2 min-h-[46px] px-4 py-2.5 bg-white hover:bg-slate-100 text-[#0A1F44] border border-slate-300 font-bold text-xs sm:text-sm rounded-xl transition-colors whitespace-nowrap"
               >
                 <ExternalLink className="w-4 h-4 shrink-0 text-[#0E5AA8]" aria-hidden="true" />
