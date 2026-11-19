@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ChevronDown, ShieldCheck, Quote, Container } from 'lucide-react';
-import { IMAGES } from '../utils/shipping';
+import { ChevronDown, ShieldCheck, Quote, Container, Facebook, ExternalLink } from 'lucide-react';
+import { IMAGES, FACEBOOK_PAGE_URL } from '../utils/shipping';
 
 const KEY_FIGURES = [
   {
@@ -167,6 +167,34 @@ export function TrustGalleryAndFaq() {
                 </figcaption>
               </figure>
             ))}
+          </div>
+
+          {/* CTA Page Facebook officielle */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="w-11 h-11 rounded-xl bg-[#1877F2]/10 text-[#1877F2] flex items-center justify-center shrink-0">
+                <Facebook className="w-5 h-5" aria-hidden="true" />
+              </div>
+              <div>
+                <h3 className="font-display text-lg font-bold text-[#0A1F44]">
+                  Suivez nos chargements et départs sur Facebook
+                </h3>
+                <p className="text-sm text-slate-600 mt-0.5">
+                  Retrouvez nos photos et vidéos de mise en conteneur à Herblay, nos avis clients et nos annonces de départ.
+                </p>
+              </div>
+            </div>
+
+            <a
+              href={FACEBOOK_PAGE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 min-h-[46px] px-5 py-2.5 bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-sm rounded-xl transition-colors whitespace-nowrap shrink-0"
+            >
+              <Facebook className="w-4 h-4 shrink-0" aria-hidden="true" />
+              <span>Suivre EBS sur Facebook</span>
+              <ExternalLink className="w-3.5 h-3.5 shrink-0 opacity-85" aria-hidden="true" />
+            </a>
           </div>
 
           {/* Témoignages clients */}

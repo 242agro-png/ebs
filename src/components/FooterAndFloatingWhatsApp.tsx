@@ -1,5 +1,9 @@
-import { MapPin, Clock, MessageCircle, Globe, UserCheck } from 'lucide-react';
-import { WHATSAPP_DISPLAY, buildSimpleWhatsAppUrl } from '../utils/shipping';
+import { MapPin, Clock, MessageCircle, Globe, UserCheck, Facebook } from 'lucide-react';
+import {
+  WHATSAPP_DISPLAY,
+  FACEBOOK_PAGE_URL,
+  buildSimpleWhatsAppUrl,
+} from '../utils/shipping';
 
 export function FooterAndFloatingWhatsApp() {
   const whatsappUrl = buildSimpleWhatsAppUrl(
@@ -69,17 +73,26 @@ export function FooterAndFloatingWhatsApp() {
                 <span>Pointe-Noire, Brazzaville, Makélékélé, Mpaka</span>
               </p>
               <p className="text-xs text-slate-300">
-                Facebook : <strong className="text-white">Fret Maritime France/Congo</strong>
+                Facebook officiel : <strong className="text-white">EBS FRET MARITIME</strong>
               </p>
-              <div className="pt-1">
+              <div className="pt-1 flex flex-wrap items-center gap-2.5">
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-sm rounded-xl transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-sm rounded-xl transition-colors whitespace-nowrap"
                 >
                   <MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
                   <span>WhatsApp : {WHATSAPP_DISPLAY}</span>
+                </a>
+                <a
+                  href={FACEBOOK_PAGE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-sm rounded-xl transition-colors whitespace-nowrap"
+                >
+                  <Facebook className="w-4 h-4 shrink-0" aria-hidden="true" />
+                  <span>Page Facebook EBS</span>
                 </a>
               </div>
             </div>

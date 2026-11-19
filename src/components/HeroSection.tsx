@@ -1,5 +1,12 @@
-import { useState } from 'react';
-import { MessageCircle, ShieldCheck, ArrowDown, Container } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  MessageCircle,
+  ShieldCheck,
+  ArrowDown,
+  Container,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
 import {
   IMAGES,
   WHATSAPP_DISPLAY,
@@ -7,8 +14,56 @@ import {
 } from '../utils/shipping';
 import { PriceSimulator } from './PriceSimulator';
 
+interface HeroSlide {
+  src: string;
+  alt: string;
+  caption: string;
+  fallbackLabel: string;
+}
+
+const HERO_SLIDES: HeroSlide[] = [
+  {
+    src: IMAGES.heroContainer,
+    alt: 'Équipe logistique chargeant un conteneur maritime jaune au départ du port du Havre pour le Congo',
+    caption: 'Départ Port du Havre · Chargement filmé et scellé devant nos clients à Herblay',
+    fallbackLabel: 'Chargement Conteneur Jaune EBS — Port du Havre',
+  },
+  {
+    src: IMAGES.heroCargoShip,
+    alt: 'Navire porte-conteneurs chargé en mer reliant la France à Pointe-Noire',
+    caption: 'Fret Maritime · Navires porte-conteneurs vers Pointe-Noire et Brazzaville',
+    fallbackLabel: 'Navire Cargo EBS — Liaison Maritime France → Congo',
+  },
+  {
+    src: IMAGES.heroCargoPlane,
+    alt: 'Avion cargo en plein vol assurant le fret aérien express vers le Congo',
+    caption: 'Fret Aérien Express · Avion cargo chaque vendredi, livraison sous 72h',
+    fallbackLabel: 'Fret Aérien Express EBS — France → Congo',
+  },
+];
+
 export function HeroSection() {
-  const [heroImgError, setHeroImgError] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [failedSlides, setFailedSlides] = useState<Record<number, boolean>>({});
+
+  useEffect(() => {
+    if (isPaused) {
+      return;
+    }
+    const timer = window.setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 4500);
+    return () => window.clearInterval(timer);
+  }, [isPaused]);
+
+  const goToPrevious = () => {
+    setActiveSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  };
+
+  const goToNext = () => {
+    setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+  };
 
   const whatsappDirectUrl = buildSimpleWhatsAppUrl(
     'Bonjour EBS FRET MARITIME, je souhaite envoyer des colis de la France vers le Congo.'
@@ -21,6 +76,8 @@ export function HeroSection() {
     }
   };
 
+  const currentSlide = HERO_SLIDES[activeSlide];
+
   return (
     <section className="relative bg-[#0A1F44] text-white overflow-hidden">
       {/* Subtle maritime ambient gradient */}
@@ -31,7 +88,7 @@ export function HeroSection() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-          {/* Colonne gauche : Message principal + Preuves + Visuel Conteneur Jaune */}
+          {/* Colonne gauche : Message principal + Preuves + Carrousel visuel */}
           <div className="lg:col-span-6 space-y-6">
             <div className="space-y-4">
               <p className="text-xs sm:text-sm font-semibold text-[#FFC400] tracking-wide">
@@ -98,26 +155,100 @@ export function HeroSection() {
               </ul>
             </div>
 
-            {/* Visuel conteneur maritime jaune & entrepôt */}
-            <figure className="relative rounded-2xl overflow-hidden border border-white/15 bg-[#06132b] aspect-[16/9]">
-              {!heroImgError ? (
-                <img
-                  src={IMAGES.heroContainer}
-                  alt="Grand conteneur maritime jaune en chargement au port du Havre pour le Congo"
-                  referrerPolicy="no-referrer"
-                  onError={() => setHeroImgError(true)}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#0A1F44] to-[#0E5AA8]">
-                  <Container className="w-12 h-12 text-[#FFC400] mb-2" aria-hidden="true" />
-                  <p className="font-display font-bold text-white">
-                    Conteneur Maritime Jaune EBS — Port du Havre
-                  </p>
+            {/* Carrousel visuel : chargement conteneur, bateau cargo et avion en vol */}
+            <figure
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="Aperçu du fret maritime et aérien EBS"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+              onFocus={() => setIsPaused(true)}
+              onBlur={() => setIsPaused(false)}
+              className="group relative rounded-2xl overflow-hidden border border-white/15 bg-[#06132b] aspect-[16/9]"
+            >
+              {HERO_SLIDES.map((slide, index) => {
+                const isActive = index === activeSlide;
+                const hasFailed = failedSlides[index];
+
+                return (
+                  <div
+                    key={slide.src}
+                    aria-hidden={!isActive}
+                    className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+                      isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                    }`}
+                  >
+                    {!hasFailed ? (
+                      <img
+                        src={slide.src}
+                        alt={slide.alt}
+                        referrerPolicy="no-referrer"
+                        onError={() =>
+                          setFailedSlides((prev) => ({ ...prev, [index]: true }))
+                        }
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#0A1F44] to-[#0E5AA8]">
+                        <Container className="w-12 h-12 text-[#FFC400] mb-2" aria-hidden="true" />
+                        <p className="font-display font-bold text-white">
+                          {slide.fallbackLabel}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* Boutons Précédent / Suivant */}
+              <button
+                type="button"
+                onClick={goToPrevious}
+                aria-label="Image précédente"
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 inline-flex items-center justify-center w-9 h-9 rounded-full bg-[#0A1F44]/75 hover:bg-[#0A1F44] text-white border border-white/25 transition-opacity sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100 cursor-pointer"
+              >
+                <ChevronLeft className="w-5 h-5" aria-hidden="true" />
+              </button>
+
+              <button
+                type="button"
+                onClick={goToNext}
+                aria-label="Image suivante"
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 inline-flex items-center justify-center w-9 h-9 rounded-full bg-[#0A1F44]/75 hover:bg-[#0A1F44] text-white border border-white/25 transition-opacity sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100 cursor-pointer"
+              >
+                <ChevronRight className="w-5 h-5" aria-hidden="true" />
+              </button>
+
+              {/* Légende + indicateurs de défilement */}
+              <figcaption className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-4 pt-8 pb-3 flex items-end justify-between gap-3">
+                <span className="text-xs sm:text-sm text-slate-100 leading-snug">
+                  {currentSlide.caption}
+                </span>
+
+                <div
+                  className="flex items-center gap-1.5 shrink-0 pb-0.5"
+                  role="tablist"
+                  aria-label="Choisir une image"
+                >
+                  {HERO_SLIDES.map((slide, index) => {
+                    const isActive = index === activeSlide;
+                    return (
+                      <button
+                        key={slide.src}
+                        type="button"
+                        role="tab"
+                        aria-selected={isActive}
+                        aria-label={`Afficher l'image ${index + 1} sur ${HERO_SLIDES.length}`}
+                        onClick={() => setActiveSlide(index)}
+                        className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                          isActive
+                            ? 'w-6 bg-[#FFC400]'
+                            : 'w-2 bg-white/45 hover:bg-white/75'
+                        }`}
+                      />
+                    );
+                  })}
                 </div>
-              )}
-              <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-4 py-3 text-xs sm:text-sm text-slate-100">
-                Départ Port du Havre · Chargement filmé et scellé devant nos clients à Herblay
               </figcaption>
             </figure>
           </div>

@@ -38,9 +38,12 @@ export interface SimulationResult {
 
 export const WHATSAPP_NUMBER = '33615274466';
 export const WHATSAPP_DISPLAY = '+33 6 15 27 44 66';
+export const FACEBOOK_PAGE_URL = 'https://www.facebook.com/BANDZOUZI/';
 
 export const IMAGES = {
-  heroContainer: '/src/assets/images/hero_yellow_container_1795037365642.jpg',
+  heroContainer: '/src/assets/images/hero_container_african_team_1795051215271.jpg',
+  heroCargoShip: '/src/assets/images/hero_cargo_ship_1795051215243.jpg',
+  heroCargoPlane: '/src/assets/images/hero_cargo_plane_1795051215573.jpg',
   warehouseHerblay: '/assets/aistudio/unnamed__2__7998f231.webp',
   securitySeal: '/src/assets/images/container_security_seal_1795037360805.jpg',
   airCargo: '/src/assets/images/air_freight_cargo_1795037361047.jpg',
