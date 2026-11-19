@@ -26,6 +26,7 @@ import {
   Map as MapIcon,
   RotateCcw,
 } from 'lucide-react';
+import { IMAGES } from '../utils/shipping';
 
 const SHARE_GOOGLE_MAPS_URL = 'https://share.google/CKah9QqMZ7F8KDQFI';
 const PLACE_SEARCH_QUERY = 'EBS FRET MARITIME 201 Route de Pierrelaye Herblay';
@@ -466,6 +467,15 @@ function HerblayMapAndPlacesContent() {
                 <span>{errorMsg}</span>
               </div>
             )}
+
+            <div className="rounded-xl overflow-hidden border border-slate-200 bg-slate-100 aspect-[16/9]">
+              <img
+                src={IMAGES.depotEntrance}
+                alt="Entrée du dépôt EBS FRET MARITIME au 201 Route de Pierrelaye, 95220 Herblay"
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover"
+              />
+            </div>
 
             <div className="space-y-3 text-sm text-slate-700">
               <div className="flex items-start gap-2.5">

@@ -41,9 +41,13 @@ export const WHATSAPP_DISPLAY = '+33 6 15 27 44 66';
 
 export const IMAGES = {
   heroContainer: '/src/assets/images/hero_yellow_container_1795037365642.jpg',
-  warehouseHerblay: '/src/assets/images/warehouse_loading_herblay_1795037359725.jpg',
+  warehouseHerblay: '/assets/aistudio/unnamed__2__7998f231.webp',
   securitySeal: '/src/assets/images/container_security_seal_1795037360805.jpg',
   airCargo: '/src/assets/images/air_freight_cargo_1795037361047.jpg',
+  depotContainerPark: '/assets/aistudio/unnamed__3__9d09a43d.webp',
+  craneLoading: '/assets/aistudio/unnamed__1__7a181fd5.webp',
+  containerChassis: '/assets/aistudio/unnamed_e5d3c17f.webp',
+  depotEntrance: '/assets/aistudio/unnamed__6__4f3f90a7.webp',
 };
 
 export function createDefaultParcel(id: number): ParcelInput {

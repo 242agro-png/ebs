@@ -136,7 +136,7 @@ export function StepsAndServices() {
                 {!warehouseImgErr ? (
                   <img
                     src={IMAGES.warehouseHerblay}
-                    alt="Entrepôt de groupage maritime à Herblay avec cartons et électroménager prêts pour Le Havre"
+                    alt="Équipe EBS Fret Maritime chargeant des colis et effets personnels dans le conteneur à Herblay"
                     referrerPolicy="no-referrer"
                     onError={() => setWarehouseImgErr(true)}
                     className="w-full h-full object-cover"

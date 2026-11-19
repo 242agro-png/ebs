@@ -22,24 +22,24 @@ const KEY_FIGURES = [
 
 const GALLERY_ITEMS = [
   {
-    src: IMAGES.heroContainer,
-    alt: 'Chargement de conteneur maritime jaune au port du Havre',
-    caption: 'Conteneurs maritimes · Départ du Havre',
+    src: IMAGES.depotContainerPark,
+    alt: "Conteneur maritime 40 pieds stationné devant l'entrepôt EBS à Herblay",
+    caption: 'Conteneur 40 pieds devant notre dépôt à Herblay',
   },
   {
-    src: IMAGES.warehouseHerblay,
-    alt: "Entrepôt EBS Fret Maritime à Herblay avec colis et électroménager préparés",
-    caption: 'Entrepôt de préparation · Herblay (95)',
+    src: IMAGES.craneLoading,
+    alt: 'Chargement de matériel volumineux par camion-grue dans le conteneur maritime',
+    caption: 'Chargement par camion-grue · Colis volumineux',
+  },
+  {
+    src: IMAGES.containerChassis,
+    alt: 'Conteneur maritime 40 pieds CAI prêt pour le départ vers le Port du Havre',
+    caption: 'Conteneur prêt pour le Port du Havre',
   },
   {
     src: IMAGES.securitySeal,
     alt: 'Scellé métallique numéroté verrouillant les portes du conteneur',
     caption: 'Scellé de sécurité numéroté filmé devant vous',
-  },
-  {
-    src: IMAGES.airCargo,
-    alt: 'Palettes de fret aérien express chargées pour le départ du vendredi',
-    caption: 'Fret aérien express · Départ vendredi',
   },
 ];
 
