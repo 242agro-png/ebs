@@ -51,7 +51,146 @@ export const IMAGES = {
   craneLoading: '/assets/aistudio/unnamed__1__7a181fd5.webp',
   containerChassis: '/assets/aistudio/unnamed_e5d3c17f.webp',
   depotEntrance: '/assets/aistudio/unnamed__6__4f3f90a7.webp',
+  officialFlyer: '/assets/aistudio/f09a43c9147642ad9a03bad9d68b8d08_5b85f8d8.jpg',
 };
+
+export interface AgencyContact {
+  id: 'france' | 'pointe-noire' | 'brazzaville';
+  countryLabel: string;
+  cityTitle: string;
+  address: string;
+  reference?: string;
+  hours?: string;
+  phones: { display: string; tel: string; whatsapp?: string }[];
+}
+
+export const OFFICIAL_AGENCIES: AgencyContact[] = [
+  {
+    id: 'france',
+    countryLabel: 'France · Entrepôt Europe',
+    cityTitle: 'Herblay (Île-de-France)',
+    address: '201 Route de Pierrelaye, 95200 / 95220 Herblay',
+    hours: 'Samedi & Dimanche : 10h30 - 17h30',
+    phones: [
+      {
+        display: '+33 6 15 27 44 66',
+        tel: '+33615274466',
+        whatsapp: '33615274466',
+      },
+    ],
+  },
+  {
+    id: 'pointe-noire',
+    countryLabel: 'Congo-Brazzaville · Port',
+    cityTitle: 'Pointe-Noire',
+    address: "Avenue de l'Indépendance, entre l'arrêt de bus Maternité ou Le Willys",
+    phones: [
+      {
+        display: '+242 06 905 91 06',
+        tel: '+242069059106',
+        whatsapp: '242069059106',
+      },
+      {
+        display: '+242 05 658 03 54',
+        tel: '+242056580354',
+      },
+    ],
+  },
+  {
+    id: 'brazzaville',
+    countryLabel: 'Congo-Brazzaville · Capitale',
+    cityTitle: 'Brazzaville',
+    address: '664 Rue Nganga Antoine (Makélékélé)',
+    reference: 'Réf : La petite Boulangerie',
+    phones: [
+      {
+        display: '+242 06 421 96 83',
+        tel: '+242064219683',
+        whatsapp: '242064219683',
+      },
+      {
+        display: '+242 06 628 09 04',
+        tel: '+242066280904',
+      },
+    ],
+  },
+];
+
+export interface CartonPreset {
+  id: string;
+  label: string;
+  dimensions: string;
+  length: number;
+  width: number;
+  height: number;
+  priceEur: number;
+}
+
+export const CARTON_PRESETS: CartonPreset[] = [
+  { id: 'c60', label: '60×40×40 cm', dimensions: '60x40x40', length: 60, width: 40, height: 40, priceEur: 50 },
+  { id: 'c70', label: '70×50×50 cm', dimensions: '70x50x50', length: 70, width: 50, height: 50, priceEur: 100 },
+  { id: 'c80', label: '80×50×50 cm', dimensions: '80x50x50', length: 80, width: 50, height: 50, priceEur: 150 },
+  { id: 'c101', label: '101×54×54 cm', dimensions: '101x54x54', length: 101, width: 54, height: 54, priceEur: 250 },
+];
+
+export type TariffCategory = 'cartons' | 'electromenager' | 'contenants';
+
+export interface TariffItem {
+  id: string;
+  category: TariffCategory;
+  name: string;
+  spec: string;
+  priceLabel: string;
+  pricePrefix?: string;
+  unitCalculator?: 'cm' | 'litre';
+  unitRate?: number;
+  defaultUnits?: number;
+}
+
+export const OFFICIAL_TARIFFS: TariffItem[] = [
+  { id: 'carton-60', category: 'cartons', name: 'Carton 60×40×40', spec: 'Format standard (60 × 40 × 40 cm)', priceLabel: '50€' },
+  { id: 'carton-70', category: 'cartons', name: 'Carton 70×50×50', spec: 'Format moyen (70 × 50 × 50 cm)', priceLabel: '100€' },
+  { id: 'carton-80', category: 'cartons', name: 'Carton 80×50×50', spec: 'Grand format (80 × 50 × 50 cm)', priceLabel: '150€' },
+  { id: 'carton-101', category: 'cartons', name: 'Carton 101×54×54', spec: 'Très grand format (101 × 54 × 54 cm)', priceLabel: '250€' },
+  { id: 'gaziniere', category: 'electromenager', name: 'Gazinière', spec: 'Cuisinière gaz / mixte protégée', pricePrefix: 'À partir de', priceLabel: '200€' },
+  { id: 'machine-laver', category: 'electromenager', name: 'Machine à laver', spec: 'Lave-linge hublot ou top', pricePrefix: 'À partir de', priceLabel: '200€' },
+  { id: 'refrigerateur', category: 'electromenager', name: 'Réfrigérateur', spec: 'Modèle standard simple ou double porte', pricePrefix: 'À partir de', priceLabel: '300€' },
+  { id: 'refrigerateur-usa', category: 'electromenager', name: 'Réfrigérateur USA', spec: 'Frigo américain double battant', pricePrefix: 'À partir de', priceLabel: '450€' },
+  { id: 'congelateur-coffre', category: 'electromenager', name: 'Congélateur coffre', spec: 'Bahut / coffre toutes capacités', pricePrefix: 'À partir de', priceLabel: '200€' },
+  { id: 'micro-ondes', category: 'electromenager', name: 'Micro-ondes', spec: 'Four micro-ondes emballé', pricePrefix: 'À partir de', priceLabel: '30€' },
+  {
+    id: 'television',
+    category: 'electromenager',
+    name: 'Télévision',
+    spec: 'Tarif calculé selon la diagonale en cm',
+    priceLabel: '1,50€ / cm',
+    unitCalculator: 'cm',
+    unitRate: 1.5,
+    defaultUnits: 100,
+  },
+  {
+    id: 'barrique',
+    category: 'contenants',
+    name: 'Barrique',
+    spec: 'Fût bleu étanche · selon contenance',
+    priceLabel: '1,00€ / litre',
+    unitCalculator: 'litre',
+    unitRate: 1,
+    defaultUnits: 120,
+  },
+  {
+    id: 'cantine',
+    category: 'contenants',
+    name: 'Cantine métallique',
+    spec: 'Malle / cantine bleue sécurisée',
+    priceLabel: '1,00€ / litre',
+    unitCalculator: 'litre',
+    unitRate: 1,
+    defaultUnits: 100,
+  },
+  { id: 'valise-30', category: 'contenants', name: 'Valise 30 kg', spec: 'Bagage jusqu’à 30 kg', priceLabel: '50€' },
+  { id: 'valise-50', category: 'contenants', name: 'Valise 50 kg', spec: 'Grand bagage jusqu’à 50 kg', priceLabel: '80€' },
+];
 
 export function createDefaultParcel(id: number): ParcelInput {
   return {
@@ -61,6 +200,15 @@ export function createDefaultParcel(id: number): ParcelInput {
     height: 40,
     weight: 25,
   };
+}
+
+function getStandardCartonPrice(l: number, w: number, h: number): number | null {
+  const sorted = [Math.round(l), Math.round(w), Math.round(h)].sort((a, b) => b - a);
+  if (sorted[0] === 60 && sorted[1] === 40 && sorted[2] === 40) return 50;
+  if (sorted[0] === 70 && sorted[1] === 50 && sorted[2] === 50) return 100;
+  if (sorted[0] === 80 && sorted[1] === 50 && sorted[2] === 50) return 150;
+  if (sorted[0] === 101 && sorted[1] === 54 && sorted[2] === 54) return 250;
+  return null;
 }
 
 export function calculateSimulation(
@@ -85,9 +233,11 @@ export function calculateSimulation(
     totalWeight += weight;
     totalVolumeM3 += volumeM3;
 
-    // Maritime formula: standard 60x40x40 = 80 EUR; larger = volume * 650 EUR, min 80 EUR
+    // Official carton tiers from EBS flyer: 60x40x40=50€, 70x50x50=100€, 80x50x50=150€, 101x54x54=250€
+    const presetPrice = getStandardCartonPrice(l, w, h);
     const rawVolumePrice = volumeM3 * 650;
-    const volumePrice = Math.max(80, Math.round(rawVolumePrice * 100) / 100);
+    const volumePrice =
+      presetPrice !== null ? presetPrice : Math.max(50, Math.round(rawVolumePrice * 100) / 100);
 
     // Weight > 100kg per carton: +30 EUR per bracket of 20kg above 100kg
     const weightSurcharge =
@@ -130,7 +280,7 @@ export function calculateSimulation(
       congoDeliverySupplement,
       estimatedTotal,
       averagePerParcel,
-      estimatedDelay: '4 à 6 semaines (départ Port du Havre)',
+      estimatedDelay: '45 jours (1 départ tous les 30 jours — Port du Havre)',
     };
   }
 

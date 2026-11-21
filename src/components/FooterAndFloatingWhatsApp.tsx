@@ -73,12 +73,24 @@ export function FooterAndFloatingWhatsApp({
             {/* Contact & Destinations */}
             <div className="lg:col-span-4 space-y-3 text-sm text-slate-300">
               <p className="font-display font-bold text-white text-base">
-                Contact &amp; Destinations Congo
+                Agences Congo &amp; Contacts
               </p>
-              <p className="flex items-start gap-2.5">
-                <Globe className="w-4 h-4 text-[#FFC400] shrink-0 mt-0.5" aria-hidden="true" />
-                <span>Pointe-Noire, Brazzaville, Makélékélé, Mpaka</span>
-              </p>
+              <div className="space-y-2 text-xs text-slate-300">
+                <p className="flex items-start gap-2">
+                  <Globe className="w-4 h-4 text-[#FFC400] shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>
+                    <strong className="text-white">Pointe-Noire :</strong> Avenue de l&apos;Indépendance (entre l&apos;arrêt Maternité et Le Willys) ·{' '}
+                    <span className="font-mono text-white">+242 06 905 91 06 / 05 658 03 54</span>
+                  </span>
+                </p>
+                <p className="flex items-start gap-2">
+                  <MapPin className="w-4 h-4 text-[#FFC400] shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>
+                    <strong className="text-white">Brazzaville :</strong> 664 Rue Nganga Antoine (Makélékélé, réf : La petite Boulangerie) ·{' '}
+                    <span className="font-mono text-white">+242 06 421 96 83 / 06 628 09 04</span>
+                  </span>
+                </p>
+              </div>
               <p className="text-xs text-slate-300">
                 Facebook officiel : <strong className="text-white">EBS FRET MARITIME</strong>
               </p>

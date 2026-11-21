@@ -161,7 +161,7 @@ export function StepsAndServices() {
                   dès 10 colis.
                 </p>
                 <p className="font-mono text-xs font-semibold text-[#0A1F44]">
-                  Carton standard 60×40×40 cm : 80€ · Départ Port du Havre
+                  Carton 60×40×40 cm : 50€ · 1 départ tous les 30 jours · Livraison 45 jours
                 </p>
               </div>
             </article>

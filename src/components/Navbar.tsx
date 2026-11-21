@@ -4,8 +4,8 @@ import { WHATSAPP_DISPLAY, buildSimpleWhatsAppUrl } from '../utils/shipping';
 
 const NAV_LINKS = [
   { label: 'Simulateur', href: '#simulateur' },
+  { label: 'Tarifs', href: '#tarifs' },
   { label: 'Étapes', href: '#etapes' },
-  { label: 'Services', href: '#services' },
   { label: 'Localisation', href: '#localisation' },
   { label: 'FAQ', href: '#faq' },
 ];

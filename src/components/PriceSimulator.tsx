@@ -18,6 +18,7 @@ import {
   FrancePickupOption,
   ParcelInput,
   ShippingMode,
+  CARTON_PRESETS,
   buildWhatsAppQuoteUrl,
   calculateSimulation,
   createDefaultParcel,
@@ -250,11 +251,49 @@ export function PriceSimulator() {
                     Colis #{idx + 1}
                   </span>
                   {mode === 'maritime' && breakdown && (
-                    <span className="font-mono text-xs text-slate-600 tabular-nums">
+                    <span className="font-mono text-xs font-semibold text-[#0E5AA8] tabular-nums">
                       {breakdown.volumeM3.toFixed(3)} m³ · {formatEuro(breakdown.parcelTotal)}
                     </span>
                   )}
                 </div>
+
+                {mode === 'maritime' && (
+                  <div className="flex flex-wrap gap-1.5 mb-2.5">
+                    {CARTON_PRESETS.map((preset) => {
+                      const isSelected =
+                        parcel.length === preset.length &&
+                        parcel.width === preset.width &&
+                        parcel.height === preset.height;
+                      return (
+                        <button
+                          key={preset.id}
+                          type="button"
+                          onClick={() =>
+                            setParcels((prev) =>
+                              prev.map((item, i) =>
+                                i === idx
+                                  ? {
+                                      ...item,
+                                      length: preset.length,
+                                      width: preset.width,
+                                      height: preset.height,
+                                    }
+                                  : item
+                              )
+                            )
+                          }
+                          className={`px-2 py-1 rounded-md text-[11px] font-semibold transition-colors cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#0A1F44] text-white'
+                              : 'bg-white border border-slate-200 text-slate-600 hover:border-[#0E5AA8]'
+                          }`}
+                        >
+                          {preset.dimensions} · {preset.priceEur}€
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
 
                 <div className="grid grid-cols-4 gap-2">
                   <div>

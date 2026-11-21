@@ -11,6 +11,7 @@ import { StepsAndServices } from './components/StepsAndServices';
 import { LocationAndGooglePhotos } from './components/LocationAndGooglePhotos';
 import { TrustGalleryAndFaq } from './components/TrustGalleryAndFaq';
 import { FooterAndFloatingWhatsApp } from './components/FooterAndFloatingWhatsApp';
+import { TariffsAndContactsSection } from './components/TariffsAndContactsSection';
 import { AnalyticsDashboard } from './components/AnalyticsDashboard';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { trackPageView } from './lib/analytics';
@@ -86,6 +87,7 @@ export default function App() {
         <main className="flex-1">
           <HeroSection />
           <DepartureAndTracking />
+          <TariffsAndContactsSection />
           <StepsAndServices />
           <LocationAndGooglePhotos />
           <TrustGalleryAndFaq />
