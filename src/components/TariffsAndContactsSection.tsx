@@ -23,6 +23,10 @@ import {
   IMAGES,
   OFFICIAL_AGENCIES,
   OFFICIAL_TARIFFS,
+  PHONE_DISPLAY,
+  PHONE_TEL,
+  WHATSAPP_DISPLAY,
+  WHATSAPP_NUMBER,
   TariffCategory,
   TariffItem,
   buildSimpleWhatsAppUrl,
@@ -59,7 +63,9 @@ const GUARANTEE_BADGES = [
 
 export function TariffsAndContactsSection() {
   const [activeTab, setActiveTab] = useState<FilterTab>('all');
-  const [flyerModalOpen, setFlyerModalOpen] = useState(false);
+  const [activeFlyerModal, setActiveFlyerModal] = useState<{ src: string; alt: string } | null>(
+    null
+  );
   const [unitValues, setUnitValues] = useState<Record<string, number>>({
     television: 100,
     barrique: 120,
@@ -132,12 +138,17 @@ export function TariffsAndContactsSection() {
 
         {/* Grille principale : Affiche officielle + Cartes tarifaires */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Colonne gauche : Image officielle de l'affiche tarifaire */}
-          <div className="lg:col-span-4 space-y-3">
+          {/* Colonne gauche : Affiches tarifaires officielles */}
+          <div className="lg:col-span-4 space-y-5">
             <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
               <button
                 type="button"
-                onClick={() => setFlyerModalOpen(true)}
+                onClick={() =>
+                  setActiveFlyerModal({
+                    src: IMAGES.officialFlyer,
+                    alt: 'Plaquette tarifaire officielle EBS FRET MARITIME France / Congo-Brazzaville',
+                  })
+                }
                 aria-label="Agrandir la plaquette tarifaire officielle EBS FRET MARITIME"
                 className="relative w-full block group cursor-pointer bg-slate-100"
               >
@@ -154,7 +165,7 @@ export function TariffsAndContactsSection() {
               </button>
               <div className="px-4 py-3 border-t border-slate-100 flex items-center justify-between gap-3 text-xs text-slate-600">
                 <span className="font-semibold text-[#0A1F44]">
-                  Plaquette officielle EBS
+                  Plaquette officielle EBS (France)
                 </span>
                 <a
                   href={buildSimpleWhatsAppUrl(
@@ -164,6 +175,49 @@ export function TariffsAndContactsSection() {
                   rel="noopener noreferrer"
                   onClick={() =>
                     void trackEvent('whatsapp_direct_click', { label: 'flyer_consult' })
+                  }
+                  className="font-bold text-[#0E5AA8] hover:underline whitespace-nowrap"
+                >
+                  Nous consulter →
+                </a>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveFlyerModal({
+                    src: IMAGES.italyFlyer,
+                    alt: 'Affiche officielle EBS FRET MARITIME Italie (Milan) vers Pointe-Noire et Brazzaville',
+                  })
+                }
+                aria-label="Agrandir l'affiche tarifaire officielle EBS FRET MARITIME Italie (Milan)"
+                className="relative w-full block group cursor-pointer bg-slate-100"
+              >
+                <img
+                  src={IMAGES.italyFlyer}
+                  alt="Affiche officielle EBS FRET MARITIME Italie (Milan) : tarif de lancement cartons depuis Parabiago (Milano) vers Pointe-Noire et Brazzaville"
+                  referrerPolicy="no-referrer"
+                  className="w-full h-auto object-contain"
+                />
+                <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0A1F44]/90 text-white text-xs font-bold shadow-md group-hover:bg-[#0E5AA8] transition-colors">
+                  <ZoomIn className="w-3.5 h-3.5 text-[#FFC400]" aria-hidden="true" />
+                  <span>Agrandir l&apos;affiche</span>
+                </span>
+              </button>
+              <div className="px-4 py-3 border-t border-slate-100 flex items-center justify-between gap-3 text-xs text-slate-600">
+                <span className="font-semibold text-[#0A1F44]">
+                  Affiche officielle Italie · Milan
+                </span>
+                <a
+                  href={buildSimpleWhatsAppUrl(
+                    'Bonjour EBS FRET MARITIME, je souhaite expédier des cartons depuis Milan (Italie) vers le Congo.'
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    void trackEvent('whatsapp_direct_click', { label: 'flyer_italy_consult' })
                   }
                   className="font-bold text-[#0E5AA8] hover:underline whitespace-nowrap"
                 >
@@ -321,11 +375,44 @@ export function TariffsAndContactsSection() {
             </p>
           </div>
 
+          {/* Contacts téléphoniques uniques */}
+          <div className="bg-[#0A1F44] text-white rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#FFC400]">
+                Contacts directs officiels
+              </p>
+              <p className="text-sm text-slate-200 mt-0.5">
+                Joignez notre équipe par téléphone ou sur WhatsApp pour vos expéditions et retraits.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <a
+                href={`tel:${PHONE_TEL}`}
+                className="inline-flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-xl bg-white text-[#0A1F44] hover:bg-[#FFC400] font-mono font-bold text-sm transition-colors whitespace-nowrap"
+              >
+                <Phone className="w-4 h-4 text-[#0E5AA8] shrink-0" aria-hidden="true" />
+                <span>Téléphone : {PHONE_DISPLAY}</span>
+              </a>
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  void trackEvent('whatsapp_direct_click', { label: 'official_contact' })
+                }
+                className="inline-flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white font-mono font-bold text-sm transition-colors whitespace-nowrap"
+              >
+                <MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+                <span>WhatsApp : {WHATSAPP_DISPLAY}</span>
+              </a>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {OFFICIAL_AGENCIES.map((agency) => (
               <article
                 key={agency.id}
-                className="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col justify-between space-y-4"
+                className="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col justify-between space-y-3"
               >
                 <div className="space-y-2.5">
                   <p className="text-xs font-bold uppercase tracking-wide text-[#0E5AA8]">
@@ -347,52 +434,19 @@ export function TariffsAndContactsSection() {
                     <p className="text-xs text-slate-600 pl-6">{agency.hours}</p>
                   )}
                 </div>
-
-                <div className="pt-4 border-t border-slate-100 space-y-2">
-                  {agency.phones.map((phone) => (
-                    <div
-                      key={phone.tel}
-                      className="flex items-center justify-between gap-2 text-sm"
-                    >
-                      <a
-                        href={`tel:${phone.tel}`}
-                        className="inline-flex items-center gap-2 font-mono font-bold text-[#0A1F44] hover:text-[#0E5AA8]"
-                      >
-                        <Phone className="w-3.5 h-3.5 text-[#0E5AA8] shrink-0" aria-hidden="true" />
-                        <span>{phone.display}</span>
-                      </a>
-                      {phone.whatsapp && (
-                        <a
-                          href={`https://wa.me/${phone.whatsapp}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() =>
-                            void trackEvent('whatsapp_direct_click', {
-                              label: `agency_${agency.id}`,
-                            })
-                          }
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#16A34A]/10 hover:bg-[#16A34A] text-[#15803D] hover:text-white text-xs font-bold transition-colors"
-                        >
-                          <MessageCircle className="w-3 h-3" aria-hidden="true" />
-                          <span>WhatsApp</span>
-                        </a>
-                      )}
-                    </div>
-                  ))}
-                </div>
               </article>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Lightbox plein écran de l'affiche tarifaire */}
-      {flyerModalOpen && (
+      {/* Lightbox plein écran de l'affiche tarifaire sélectionnée */}
+      {activeFlyerModal && (
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Affiche tarifaire officielle EBS FRET MARITIME"
-          onClick={() => setFlyerModalOpen(false)}
+          aria-label={activeFlyerModal.alt}
+          onClick={() => setActiveFlyerModal(null)}
           className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4"
         >
           <div
@@ -401,15 +455,15 @@ export function TariffsAndContactsSection() {
           >
             <button
               type="button"
-              onClick={() => setFlyerModalOpen(false)}
+              onClick={() => setActiveFlyerModal(null)}
               aria-label="Fermer l'affiche"
               className="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-black/75 hover:bg-black text-white flex items-center justify-center cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
             <img
-              src={IMAGES.officialFlyer}
-              alt="Plaquette tarifaire officielle EBS FRET MARITIME"
+              src={activeFlyerModal.src}
+              alt={activeFlyerModal.alt}
               referrerPolicy="no-referrer"
               className="w-full max-h-[85vh] object-contain bg-slate-100"
             />

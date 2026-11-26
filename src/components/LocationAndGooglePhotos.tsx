@@ -31,6 +31,10 @@ import { trackEvent } from '../lib/analytics';
 
 const SHARE_GOOGLE_MAPS_URL = 'https://share.google/CKah9QqMZ7F8KDQFI';
 const PLACE_SEARCH_QUERY = 'EBS FRET MARITIME 201 Route de Pierrelaye Herblay';
+const HERBLAY_EMBED_MAP_URL =
+  'https://maps.google.com/maps?q=EBS+FRET+MARITIME,+201+Route+de+Pierrelaye,+95220+Herblay,+France&t=&z=16&ie=UTF8&iwloc=&output=embed';
+const HERBLAY_DIRECTIONS_URL =
+  'https://www.google.com/maps/dir/?api=1&destination=201+Route+de+Pierrelaye,+95220+Herblay,+France';
 const INITIAL_VIEWPORT_CENTER = { lat: 49.0, lng: 2.16 };
 const MAPS_LIBRARIES = ['places', 'marker', 'streetView'];
 
@@ -145,6 +149,19 @@ function StreetViewPanel({ location }: { location: google.maps.LatLngLiteral }) 
         </div>
       )}
     </div>
+  );
+}
+
+function HerblayEmbeddedMap() {
+  return (
+    <iframe
+      title="Localisation EBS FRET MARITIME — 201 Route de Pierrelaye, 95220 Herblay"
+      src={HERBLAY_EMBED_MAP_URL}
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+      allowFullScreen
+      className="w-full h-full min-h-[320px] border-0 block"
+    />
   );
 }
 
@@ -315,14 +332,14 @@ function HerblayMapAndPlacesContent() {
       {/* Carte interactive / Street View + Fiche Google Maps */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Carte Google Maps ou Street View */}
-        <div className="lg:col-span-7 flex flex-col gap-3">
+        <div className="lg:col-span-7 min-w-0 flex flex-col gap-3">
           {placeData && (
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-2.5">
               <div className="inline-flex items-center gap-1 p-1 bg-[#F1F5F9] rounded-xl">
                 <button
                   type="button"
                   onClick={() => setViewMode('map')}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
                     viewMode === 'map'
                       ? 'bg-[#0A1F44] text-white shadow-sm'
                       : 'text-slate-700 hover:text-[#0A1F44]'
@@ -334,7 +351,7 @@ function HerblayMapAndPlacesContent() {
                 <button
                   type="button"
                   onClick={() => setViewMode('streetview')}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
                     viewMode === 'streetview'
                       ? 'bg-[#0E5AA8] text-white shadow-sm'
                       : 'text-slate-700 hover:text-[#0A1F44]'
@@ -357,8 +374,11 @@ function HerblayMapAndPlacesContent() {
             </div>
           )}
 
-          <div className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 h-[360px] sm:h-[440px] relative">
-            {viewMode === 'streetview' && placeData ? (
+          <div className="w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 min-h-[320px] h-[340px] sm:h-[440px] relative">
+            {apiStatus === APILoadingStatus.FAILED ||
+            apiStatus === APILoadingStatus.AUTH_FAILURE ? (
+              <HerblayEmbeddedMap />
+            ) : viewMode === 'streetview' && placeData ? (
               <StreetViewPanel location={placeData.location} />
             ) : (
               <GoogleMap
@@ -763,37 +783,87 @@ export function LocationAndGooglePhotos() {
             <HerblayMapAndPlacesContent />
           </APIProvider>
         ) : (
-          <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <h3 className="font-display text-xl font-bold text-[#0A1F44]">
-                EBS FRET MARITIME — 201 Route de Pierrelaye, 95220 Herblay
-              </h3>
-              <p className="text-sm text-slate-600 max-w-2xl">
-                {providerLoadError
-                  ? "La carte interactive n'a pas pu se charger dans ce navigateur. Vous pouvez réessayer ou ouvrir directement notre fiche officielle sur Google Maps."
-                  : 'Consultez notre localisation exacte, nos horaires, les avis clients et les photos directement sur notre page Google Maps.'}
-              </p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            <div className="lg:col-span-7 min-w-0 flex flex-col gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-2.5">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0A1F44] text-white text-xs font-bold rounded-lg">
+                  <MapIcon className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Carte Google Maps — Entrepôt Herblay</span>
+                </div>
+                {providerLoadError && (
+                  <button
+                    type="button"
+                    onClick={handleRetry}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 text-[#0A1F44] border border-slate-300 font-bold text-xs rounded-lg transition-colors cursor-pointer"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                    <span>Réessayer l'API</span>
+                  </button>
+                )}
+              </div>
+              <div className="w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 min-h-[320px] h-[340px] sm:h-[440px] relative">
+                <HerblayEmbeddedMap />
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
-              {providerLoadError && (
-                <button
-                  type="button"
-                  onClick={handleRetry}
-                  className="inline-flex items-center justify-center gap-2 min-h-[46px] px-4 py-2.5 bg-white hover:bg-slate-100 text-[#0A1F44] border border-slate-300 font-bold text-sm rounded-xl transition-colors whitespace-nowrap cursor-pointer"
-                >
-                  <RotateCcw className="w-4 h-4 shrink-0" aria-hidden="true" />
-                  <span>Réessayer</span>
-                </button>
-              )}
-              <a
-                href={SHARE_GOOGLE_MAPS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 min-h-[46px] px-5 py-3 bg-[#0E5AA8] hover:bg-[#0A1F44] text-white font-bold text-sm rounded-xl transition-colors whitespace-nowrap"
-              >
-                <MapPin className="w-4 h-4 shrink-0" aria-hidden="true" />
-                <span>Ouvrir la page Google Maps</span>
-              </a>
+
+            <div className="lg:col-span-5 min-w-0 bg-[#F8FAFC] border border-slate-200 rounded-2xl p-6 sm:p-7 flex flex-col justify-between">
+              <div className="space-y-4">
+                <div>
+                  <p className="text-xs font-semibold text-[#0E5AA8] mb-1">
+                    Entrepôt France &amp; Europe
+                  </p>
+                  <h3 className="font-display text-2xl font-extrabold text-[#0A1F44]">
+                    EBS FRET MARITIME
+                  </h3>
+                </div>
+
+                <div className="rounded-xl overflow-hidden border border-slate-200 bg-slate-100 aspect-[16/9]">
+                  <img
+                    src={IMAGES.depotEntrance}
+                    alt="Entrée du dépôt EBS FRET MARITIME au 201 Route de Pierrelaye, 95220 Herblay"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <div className="space-y-3 text-sm text-slate-700">
+                  <div className="flex items-start gap-2.5">
+                    <MapPin className="w-4 h-4 text-[#0E5AA8] shrink-0 mt-0.5" aria-hidden="true" />
+                    <span>201 Route de Pierrelaye, 95220 Herblay, France</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Clock className="w-4 h-4 text-[#0E5AA8] shrink-0 mt-0.5" aria-hidden="true" />
+                    <p className="font-semibold text-[#0A1F44]">
+                      Dépôt des colis : Samedi &amp; Dimanche 10h30 - 17h30
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-5 mt-5 border-t border-slate-200 space-y-2.5">
+                <div className="flex flex-col sm:flex-row gap-2.5">
+                  <a
+                    href={HERBLAY_DIRECTIONS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => void trackEvent('maps_click', { label: 'directions_fallback' })}
+                    className="flex-1 inline-flex items-center justify-center gap-2 min-h-[46px] px-4 py-2.5 bg-[#0A1F44] hover:bg-[#0E5AA8] text-white font-bold text-xs sm:text-sm rounded-xl transition-colors whitespace-nowrap"
+                  >
+                    <Navigation className="w-4 h-4 shrink-0" aria-hidden="true" />
+                    <span>Itinéraire GPS</span>
+                  </a>
+                  <a
+                    href={SHARE_GOOGLE_MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => void trackEvent('maps_click', { label: 'place_page_fallback' })}
+                    className="flex-1 inline-flex items-center justify-center gap-2 min-h-[46px] px-4 py-2.5 bg-white hover:bg-slate-100 text-[#0A1F44] border border-slate-300 font-bold text-xs sm:text-sm rounded-xl transition-colors whitespace-nowrap"
+                  >
+                    <ExternalLink className="w-4 h-4 shrink-0 text-[#0E5AA8]" aria-hidden="true" />
+                    <span>Page Google Maps</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         )}

@@ -1,5 +1,7 @@
-import { MapPin, Clock, MessageCircle, Globe, UserCheck, Facebook, BarChart3 } from 'lucide-react';
+import { MapPin, Clock, MessageCircle, Globe, UserCheck, Facebook, BarChart3, Phone } from 'lucide-react';
 import {
+  PHONE_DISPLAY,
+  PHONE_TEL,
   WHATSAPP_DISPLAY,
   FACEBOOK_PAGE_URL,
   buildSimpleWhatsAppUrl,
@@ -79,16 +81,23 @@ export function FooterAndFloatingWhatsApp({
                 <p className="flex items-start gap-2">
                   <Globe className="w-4 h-4 text-[#FFC400] shrink-0 mt-0.5" aria-hidden="true" />
                   <span>
-                    <strong className="text-white">Pointe-Noire :</strong> Avenue de l&apos;Indépendance (entre l&apos;arrêt Maternité et Le Willys) ·{' '}
-                    <span className="font-mono text-white">+242 06 905 91 06 / 05 658 03 54</span>
+                    <strong className="text-white">Pointe-Noire :</strong> Avenue de l&apos;Indépendance (entre l&apos;arrêt Maternité et Le Willys)
                   </span>
                 </p>
                 <p className="flex items-start gap-2">
                   <MapPin className="w-4 h-4 text-[#FFC400] shrink-0 mt-0.5" aria-hidden="true" />
                   <span>
-                    <strong className="text-white">Brazzaville :</strong> 664 Rue Nganga Antoine (Makélékélé, réf : La petite Boulangerie) ·{' '}
-                    <span className="font-mono text-white">+242 06 421 96 83 / 06 628 09 04</span>
+                    <strong className="text-white">Brazzaville :</strong> 664 Rue Nganga Antoine (Makélékélé, réf : La petite Boulangerie)
                   </span>
+                </p>
+                <p className="flex items-center gap-2 pt-1">
+                  <Phone className="w-4 h-4 text-[#FFC400] shrink-0" aria-hidden="true" />
+                  <a
+                    href={`tel:${PHONE_TEL}`}
+                    className="font-mono font-bold text-white hover:text-[#FFC400] transition-colors"
+                  >
+                    Téléphone : {PHONE_DISPLAY}
+                  </a>
                 </p>
               </div>
               <p className="text-xs text-slate-300">
