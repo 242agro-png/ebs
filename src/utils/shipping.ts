@@ -100,10 +100,8 @@ export interface SimulationResult {
   estimatedDelay: string;
 }
 
-export const WHATSAPP_NUMBER = '393271839426';
-export const WHATSAPP_DISPLAY = '+39 327 183 9426';
-export const PHONE_DISPLAY = '348 262 93 40';
-export const PHONE_TEL = '+393482629340';
+export const WHATSAPP_NUMBER = '33615274466';
+export const WHATSAPP_DISPLAY = '+33 6 15 27 44 66';
 export const FACEBOOK_PAGE_URL = 'https://www.facebook.com/BANDZOUZI/';
 
 export const IMAGES = {

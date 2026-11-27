@@ -1,7 +1,5 @@
-import { MapPin, Clock, MessageCircle, Globe, UserCheck, Facebook, BarChart3, Phone } from 'lucide-react';
+import { MapPin, Clock, MessageCircle, Globe, UserCheck, Facebook, BarChart3 } from 'lucide-react';
 import {
-  PHONE_DISPLAY,
-  PHONE_TEL,
   WHATSAPP_DISPLAY,
   FACEBOOK_PAGE_URL,
   buildSimpleWhatsAppUrl,
@@ -90,14 +88,8 @@ export function FooterAndFloatingWhatsApp({
                     <strong className="text-white">Brazzaville :</strong> 664 Rue Nganga Antoine (Makélékélé, réf : La petite Boulangerie)
                   </span>
                 </p>
-                <p className="flex items-center gap-2 pt-1">
-                  <Phone className="w-4 h-4 text-[#FFC400] shrink-0" aria-hidden="true" />
-                  <a
-                    href={`tel:${PHONE_TEL}`}
-                    className="font-mono font-bold text-white hover:text-[#FFC400] transition-colors"
-                  >
-                    Téléphone : {PHONE_DISPLAY}
-                  </a>
+                <p className="text-xs text-[#FFC400] font-semibold pt-1">
+                  Numéro unique (France, Brazzaville, Pointe-Noire &amp; Italie) : WhatsApp {WHATSAPP_DISPLAY}
                 </p>
               </div>
               <p className="text-xs text-slate-300">

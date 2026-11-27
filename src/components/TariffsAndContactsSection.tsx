@@ -9,7 +9,6 @@ import {
   MessageCircle,
   Microwave,
   Package,
-  Phone,
   Refrigerator,
   ShieldCheck,
   Ship,
@@ -23,8 +22,6 @@ import {
   IMAGES,
   OFFICIAL_AGENCIES,
   OFFICIAL_TARIFFS,
-  PHONE_DISPLAY,
-  PHONE_TEL,
   WHATSAPP_DISPLAY,
   WHATSAPP_NUMBER,
   TariffCategory,
@@ -375,24 +372,17 @@ export function TariffsAndContactsSection() {
             </p>
           </div>
 
-          {/* Contacts téléphoniques uniques */}
+          {/* Numéro unique officiel WhatsApp */}
           <div className="bg-[#0A1F44] text-white rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-[#FFC400]">
-                Contacts directs officiels
+                Numéro d&apos;informations unique
               </p>
               <p className="text-sm text-slate-200 mt-0.5">
-                Joignez notre équipe par téléphone ou sur WhatsApp pour vos expéditions et retraits.
+                Le seul et unique numéro pour la France, Brazzaville, Pointe-Noire et l&apos;Italie reste notre WhatsApp.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3 shrink-0">
-              <a
-                href={`tel:${PHONE_TEL}`}
-                className="inline-flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-xl bg-white text-[#0A1F44] hover:bg-[#FFC400] font-mono font-bold text-sm transition-colors whitespace-nowrap"
-              >
-                <Phone className="w-4 h-4 text-[#0E5AA8] shrink-0" aria-hidden="true" />
-                <span>Téléphone : {PHONE_DISPLAY}</span>
-              </a>
               <a
                 href={`https://wa.me/${WHATSAPP_NUMBER}`}
                 target="_blank"
@@ -400,7 +390,7 @@ export function TariffsAndContactsSection() {
                 onClick={() =>
                   void trackEvent('whatsapp_direct_click', { label: 'official_contact' })
                 }
-                className="inline-flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white font-mono font-bold text-sm transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-2 min-h-[44px] px-5 py-2.5 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white font-mono font-bold text-sm transition-colors whitespace-nowrap"
               >
                 <MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
                 <span>WhatsApp : {WHATSAPP_DISPLAY}</span>
